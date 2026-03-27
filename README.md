@@ -1,9 +1,9 @@
 # Sticky Notes App
 
-Name: Mian Ayaan
-Roll Number: 22p9149
-Assignment: Web Engineering Assignment 2
-University: FAST NUCES Peshawar
+Name: Mian Ayaan  
+Roll Number: 22p9149  
+Assignment: Web Engineering Assignment 2  
+University: FAST NUCES Peshawar  
 
 ## About
 
