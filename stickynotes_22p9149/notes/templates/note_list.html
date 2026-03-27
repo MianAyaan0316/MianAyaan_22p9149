@@ -1,0 +1,109 @@
+<!-- note_list.html file user ke liye apne notes dekhne ke liye hai, yani ke jab user apne account mein login karta 
+hai, to usse yeh page dikhai deta hai jisme uske saare notes listed hote hain.-->
+
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .pinned-note {
+        border: 3px solid #333 !important;
+    }
+</style>
+
+<!-- page heading aur new note button -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2> My Sticky Notes</h2>
+    <a href="{% url 'note_create' %}" class="btn btn-primary">+ New Note</a>
+</div>
+
+<!-- search bar — notes ko title ya content se filter karo -->
+<form method="get" style="margin-bottom: 25px;">
+    <div style="display: flex; gap: 10px;">
+        <input type="text"
+               name="search"
+               value="{{ search_query }}"
+               placeholder="Search notes by title or content..."
+               style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search_query %}
+            <a href="{% url 'note_list' %}" class="btn btn-secondary">Clear</a>
+        {% endif %}
+    </div>
+</form>
+
+<!-- search results ki info -->
+{% if search_query %}
+    <p style="color: #888; margin-bottom: 15px;">
+        Search results for: "<strong>{{ search_query }}</strong>"
+    </p>
+{% endif %}
+
+<!-- notes grid -->
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for note in notes %}
+        <div class="{% if note.is_pinned %}pinned-note{% endif %}" style="
+            background-color: {{ note.color }};
+            padding: 20px;
+            border-radius: 8px;
+            width: 220px;
+            min-height: 180px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            word-wrap: break-word;
+        ">
+            <div>
+                <!-- pinned badge dikhao agar note pinned hai -->
+                {% if note.is_pinned %}
+                    <span style="background:#333; color:white; padding:2px 8px; border-radius:10px; font-size:11px;">
+                        Pinned
+                    </span>
+                {% endif %}
+                <h3 style="margin: 8px 0 10px; font-size: 16px;">{{ note.title }}</h3>
+                <p style="font-size: 14px; color: #333;">{{ note.content }}</p>
+            </div>
+            <div>
+                <small style="color: #555; font-size: 11px;">
+                    Updated: {{ note.updated_at|date:"d M Y" }}
+                </small>
+                <div style="margin-top: 10px;">
+                    <a href="{% url 'note_edit' note.pk %}" class="btn btn-edit">Edit</a>
+                    <a href="{% url 'note_delete' note.pk %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+
+    {% empty %}
+        <div style="text-align: center; width: 100%; margin-top: 50px; color: #888;">
+            {% if search_query %}
+                <h3>No notes found for "{{ search_query }}"</h3>
+                <a href="{% url 'note_list' %}" class="btn btn-secondary">Show all notes</a>
+            {% else %}
+                <h3>No notes yet!</h3>
+                <p>Click "+ New Note" to create your first note.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<!-- pagination controls — agar notes 10 se zyada hain -->
+{% if page_obj.has_other_pages %}
+<div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+           class="btn btn-secondary">← Previous</a>
+    {% endif %}
+
+    <span style="padding: 8px 16px; background: white; border-radius: 5px;">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+           class="btn btn-primary">Next →</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

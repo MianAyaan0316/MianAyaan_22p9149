@@ -1,0 +1,66 @@
+<!-- note_confirm_delete.html file user se confirm karti hai ke woh sach mein 
+apna note delete karna chahta hai ya nahi. Is file mein ek confirmation card 
+banaya hai jisme user ko note ka title dikhai deta hai, taake wo confirm kar sake ke sahi 
+note delete ho raha hai. User ke paas do options hote hain: "Delete" button jo note 
+delete karne ke liye form submit karta hai, aur "Cancel" button jo user ko wapis notes list par 
+le jata hai bina delete kiye. Is tarah se hum apne users ko galti se important notes delete 
+karne se bachate hain. -->
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- confirmation card — center mein dikhega -->
+<div style="
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+">
+    <!-- warning icon aur heading -->
+    <h2 style="color: #f44336; margin-bottom: 20px;">Delete Note</h2>
+
+    <!-- user ko note ka title dikhao taake confirm ho ke sahi note delete ho raha hai -->
+    <p style="font-size: 16px; margin-bottom: 10px;">
+        Are you sure you want to delete this note?
+    </p>
+
+    <!-- note ka title highlight karke dikhao -->
+    <p style="
+        font-size: 18px;
+        font-weight: bold;
+        background: #fff3cd;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 25px;
+    ">
+        "{{ note.title }}"
+    </p>
+
+    <p style="color: #888; font-size: 13px; margin-bottom: 25px;">
+        This action cannot be undone — the note will be permanently deleted!
+    </p>
+
+    <!-- yeh form POST request bhejta hai — view mein POST aaya toh note delete hoga -->
+    <form method="post">
+        <!-- csrf token security ke liye zaroori hai -->
+        {% csrf_token %}
+
+        <!-- haan delete karo button — form submit karega POST request ke saath -->
+        <button type="submit" class="btn btn-danger" style="font-size: 16px; padding: 10px 25px;">
+            Yes,delete it
+        </button>
+
+        <!-- cancel button — wapis notes list par jao bina delete kiye -->
+        <a href="{% url 'note_list' %}" class="btn btn-secondary" style="font-size: 16px; padding: 10px 25px;">
+            Cancel
+        </a>
+
+    </form>
+</div>
+
+{% endblock %}

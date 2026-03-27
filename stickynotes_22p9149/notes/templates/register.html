@@ -1,0 +1,43 @@
+<!--yeh file naye user ke registration ke liye hai, yani ke jab koi naya user register karta hai, 
+to yeh page dikhata hai ..  -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 50px auto;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+">
+    <!-- page ki heading -->
+    <h2 style="text-align: center; margin-bottom: 25px;">Create New Account </h2>
+
+    <!-- registration form — Django ka UserCreationForm yahan render hoga -->
+    <form method="post">
+
+        <!-- security ke liye csrf token zaroori hai -->
+        {% csrf_token %}
+
+        <!-- Django automatically username, password1, password2 fields banata hai -->
+        {{ form.as_p }}
+
+        <!-- register button -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px; margin-top: 10px;">
+             Register here 
+        </button>
+
+    </form>
+
+    <!-- agar pehle se account hai toh login page par jao -->
+    <p style="text-align: center; margin-top: 20px; color: #888;">
+        Already have an account? 
+         <a href="/login/" style="color: #4CAF50;">Login here </a> 
+    </p>
+
+</div>
+
+{% endblock %}  

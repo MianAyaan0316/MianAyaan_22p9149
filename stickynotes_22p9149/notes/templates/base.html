@@ -1,0 +1,129 @@
+<!-- ye page hamare app ke har page par dikhai dega, taki user ko har page par easily 
+navigation karne ka option mile. Is navbar mein app ka naam hai jo click karne par user ko 
+notes list page par le jata hai. Agar user logged in hai, toh uska naam aur logout button 
+dikhai deta hai, aur agar user logged out hai, toh login aur register buttons dikhai 
+dete hain. Is tarah se hum apne app ke har page par consistent navigation experience provide 
+kar sakte hain. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky Notes App</title>
+    <style>
+        /* poore page ki basic styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        /* navbar ki styling */
+        nav {
+            background-color: #333;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* navbar ke links ki styling */
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            margin-left: 15px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* navbar mein user ka naam dikhane ke liye */
+        .nav-user {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* main content area */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* buttons ki styling */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin: 3px;
+        }
+
+        .btn-primary { background-color: #4CAF50; color: white; }
+        .btn-danger  { background-color: #f44336; color: white; }
+        .btn-secondary { background-color: #888; color: white; }
+        .btn-edit { background-color: #2196F3; color: white; }
+
+        /* form ki styling */
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* error messages ki styling */
+        .errorlist {
+            color: red;
+            font-size: 13px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- navigation bar — har page par yahi dikhega -->
+<nav>
+    <div>
+        <!-- app ka naam:  click karo toh notes list par jao -->
+        <a href="/notes/" style="font-size: 20px; font-weight: bold;">📝 Sticky Notes</a>
+    </div>
+
+    <div style="display: flex; align-items: center;">
+        <!-- agar user logged in hai toh uska naam aur logout button dikhao -->
+        {% if user.is_authenticated %}
+            <span class="nav-user">Hello, {{ user.username }}! &nbsp;</span>
+            <a href="/logout/" class="btn btn-danger">Logout</a>
+
+        <!-- agar user logged out hai toh login aur register buttons dikhao -->
+        {% else %}
+            <a href="/login/" class="btn btn-primary">Login</a>
+            <a href="/register/" class="btn btn-secondary">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- yahan child pages apna content dalenge -->
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

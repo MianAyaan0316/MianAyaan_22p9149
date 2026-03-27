@@ -1,0 +1,50 @@
+<!-- yeh login.html file existing user ke login ke liye hai,jab koi 
+ user apne account mein login karta hai, to usse yeh page dikhata hai. Is file mein hum base.html 
+ ko extend karte hain, taki hume har page par same navbar aur styling mile. Is file mein hum ek 
+ form banate hain jisme user apna username aur password fill karta hai. Form submit karne par, 
+ Django ka built-in login process start ho jata hai, aur agar credentials sahi hote hain, to 
+ user apne notes list page par chala jata hai. Agar user ke paas account nahi hai, to usse 
+ registration page par jane ka option bhi diya gaya hai. Is tarah se hum apne app ke login 
+ process ko simple aur user-friendly bana sakte hain. -->
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 50px auto;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+">
+    <!-- page ka heading -->
+    <h2 style="text-align: center; margin-bottom: 25px;">Login here</h2>
+
+    <!-- login form — Django ka built-in LoginView yahan render hoga -->
+    <form method="post">
+
+        <!-- security ke liye csrf token zaroori hai -->
+        {% csrf_token %}
+
+        <!-- Django automatically username aur password fields banata hai -->
+        {{ form.as_p }}
+
+        <!-- login button -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px; margin-top: 10px;">
+             Login 
+        </button>
+
+    </form>
+
+    <!-- agar account nahi hai toh register page par jao -->
+    <p style="text-align: center; margin-top: 20px; color: #888;">
+        Don't have an account? 
+        <a href="/register/" style="color: #4CAF50;"> Register here </a>
+    </p>
+
+</div>
+
+{% endblock %}
